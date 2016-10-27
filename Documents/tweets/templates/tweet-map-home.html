@@ -1,0 +1,83 @@
+<html>
+
+
+<div id="header">
+<h1>TwittMap</h1>
+<p>Author: Rewa Jayant Kale[rjk422], Karan Chaudhari[kc3289]</p>
+</div>
+
+
+<div id="section">
+<h1>Tweeter Map, Total tweets on Elastic Search {{count}} </h1>
+<h2>Selected Keyword: {{selected}}</h2>
+<form method="POST"> 
+<p>Click on the red dots to see the tweets</p>
+<select name ="dropdown" onchange='this.form.submit()'>
+    <option selected="selected"  disabled="disabled"></option>
+    <option value="Restaurant">Restaurant</option>
+    <option value="Donald Trump"> Donald Trump </option>
+    <option value="Barack Obama"> Barack Obama </option>
+    <option value="India"> India </option>
+    <option value="America"> America </option>
+    <option value="Facebook"> Facebook </option>
+    <option value="Twitter"> Twitter </option>
+    <option value="Ronaldo"> Ronaldo </option>
+    <option value="Messi"> Messi </option>
+    <option value="House of Cards"> House of Cards </option>
+</select>
+</form>
+<noscript><input type="submit" value="Submit"></noscript>
+
+</dev>
+
+
+<head>
+  
+  <title>TwittMap</title>
+  <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
+  
+</head>
+<body>
+  <div id="map" style="height: 500px; width: 1000px;">
+</div>
+
+
+
+
+<script type="text/javascript">
+
+    var locations = {{coord_list|tojson}};
+    var small_blue = 'https://storage.googleapis.com/support-kms-prod/SNP_2752125_en_v0'
+
+    var worldCenter = {lat: 40.52, lng: 4.34};
+
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 2,
+      center: worldCenter,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    });
+
+
+
+    var marker, i;
+    var infowindow = new google.maps.InfoWindow();
+
+    
+    for (i = 0; i < locations.length; i++) { 
+      marker = new google.maps.Marker({
+        position: new google.maps.LatLng(locations[i][2], locations[i][1]),
+        map: map
+      });
+
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          infowindow.setContent(locations[i][0]);
+          infowindow.open(map, marker);
+        }
+      })(marker, i));
+
+        
+      }
+  </script>
+</body>
+</html>
