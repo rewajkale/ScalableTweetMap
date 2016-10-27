@@ -1,7 +1,6 @@
 # ScalableTweetMap
-Map showing tweets on the map for the country United States for the selected keyword
-
+Map showing live tweets for the selected keywords in US
+Using elasticsearch on backend and flask on frontend
 Authors:
-
-Karan Chaudhari [kc3289]
 Rewa Jayant Kale [rjk422]
+Karan Chaudhari [kc3289]
