@@ -4,36 +4,39 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>TwittMap</title>
-    <link rel="stylesheet" type="text/css" href="header-search.css">
+    <div id="header">
+<h1>TwittMap (with sentiment analysis)</h1>
+<p>Author: Karan Chaudhari[kc3289],Rewa Jayant Kale[rjk422], </p>
+
+</div>
     <link href='http://fonts.googleapis.com/css?family=Cookie' rel='stylesheet' type='text/css'>
-    <style type="text/css">
-        #map { height: 650px; width: 100%; }
+     <style type="text/css">
+   
+#map { height: 500px; width: 1000px; }
     </style>
 </head>
 
 <body>
 
-<header class="header-search">
-    <div class="header-limiter">
-        <h1><a href="#">Twitt<span>Map</span></a></h1>
+<header >
+    <div >
         <select id="combo">
-            <option searchKeyword="1">Trump</option>
-            <option searchKeyword="2">Hillary</option>
-            <option searchKeyword="3">Sanders</option>
-            <option searchKeyword="4">Facebook</option>
-            <option searchKeyword="5">LinkedIn</option>
-            <option searchKeyword="6">Amazon</option>
-            <option searchKeyword="7">Google</option>
-            <option searchKeyword="8">Uber</option>
-            <option searchKeyword="9">Columbia</option>
-            <option searchKeyword="10">New York</option>
+            <option searchKeyword="1">Restaurant</option>
+            <option searchKeyword="2">Weather </option>
+            <option searchKeyword="3">New york </option>
+            <option searchKeyword="4">california </option>
+            <option searchKeyword="5">snow </option>
+            <option searchKeyword="6"> pretzel </option>
+            <option searchKeyword="7">Twitter </option>
+            <option searchKeyword="8"> burger </option>
+            <option searchKeyword="9">pizza </option>
+            <option searchKeyword="10"> music </option>
+            <option searchKeyword="11">  </option>
         </select>
-        <input id="button1" type="button" value="Filter!"/>
+        <input id="button1" type="button" value="submit"/>
     </div>
-	<h3><b> Total Hits: <span id ="count" style = "color: red">  0 </h2> </span></b></h3></br>
 </header>
-
+<p>No of tweets : <span id="no"></span></p>
 <div id="map"></div>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAD5xAB3Qt9wA7btY_cBSgC7cJ-ZMs1BKo"></script>
@@ -42,8 +45,8 @@
     var map;
     function initialize() {
         map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 2,
-            center: {lat: 40.7127, lng: -74.0059}
+            zoom: 4,
+            center: {lat: 40.7127, lng: -98.0059}
         });
     }
 
@@ -51,15 +54,15 @@
     var infoWindow = new google.maps.InfoWindow({});
     var icons = {
         positive: {
-            url: 'http://emojipedia-us.s3.amazonaws.com/cache/66/29/66298a09196951d6dcd1109a4ae7ff3f.png',
+            url: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
             scaledSize: new google.maps.Size(30, 30)
         },
         neutral: {
-            url: 'http://emojipedia-us.s3.amazonaws.com/cache/39/0e/390ec41f52a1a989e95dd2b55d4296db.png',
+            url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
             scaledSize: new google.maps.Size(30, 30)
         },
         negative: {
-            url: 'http://emojipedia-us.s3.amazonaws.com/cache/63/d2/63d239de4b9480e8f6ba75046687d92e.png',
+            url: 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
             scaledSize: new google.maps.Size(30, 30)
         }
     };
@@ -82,7 +85,6 @@
             infoWindow.setContent(
                 '<div id="bodyContent">' +
                 '<p><a href="https://twitter.com/' + user + '"><b>' + user + '</b></a>: ' + text + '</p>' +
-                '<p><b>' + time + '</b></p>' +
                 '</div>'
             );
             infoWindow.open(map, marker);
@@ -102,22 +104,27 @@
 <script src="https://cdn.socket.io/socket.io-1.2.1.js"></script>
 
 <script>
+
     var socket = io();
+    var no = 0;  
     $('#button1').click(function () {
         var keyword = $('#combo').find(':selected').text();
         socket.emit('clicked', {key: keyword});
     });
     socket.on('toggle', function (data) {
         var tweets = data.tweet;
+        var no = tweets.length;
+        document.getElementById("no").innerText = no;
+
         removeMarkers();
         for (var i = 0; i < tweets.length; i++) {
             addMarker(tweets[i]);
+          
         }
+
     });
     socket.on('newcoming', function (data) {
         var tweet = data.tweet;
-        // Ideally, tweet should only be added if it matches the current selected item in the combobox
-        // However, in order to see it more frequently, we choose to always add it
         addMarker(tweet, true);
     });
 
