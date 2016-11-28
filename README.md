@@ -1,5 +1,10 @@
 # ScalableTweetMap
-Map showing live tweets for the selected keywords in US .
-Using elasticsearch on backend and flask on frontend
+Map showing live tweets with sentiment for the selected keywords.
 
-link- http://kartenv1.8cw4nmsz2j.us-west-2.elasticbeanstalk.com/
+Using 
+1)elasticsearch and flask on backend , 
+2)Express.js on frontend
+3)amazon sqs for queueing and sns for push notifications of tweets 
+4)alchemy api for sentiment analysis
+
+link- http://ec2-35-164-146-13.us-west-2.compute.amazonaws.com/
